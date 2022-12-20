@@ -10,18 +10,18 @@ struct AVLNode{
 //create a node
 AVLNode *createNode(int key){
     AVLNode *p = new AVLNode;
-    if(p==NULL){
-        return NULL;
+    if(p==nullptr){
+        return nullptr;
     }
     p->key = key;
-    p->pLeft = NULL;
-    p->pRight = NULL;
+    p->pLeft = nullptr;
+    p->pRight = nullptr;
     p->height = 1;
     return p;
 }
 //insert node
 void insertNode(AVLNode *&root, int key){
-    if(root == NULL){
+    if(root == nullptr){
         AVLNode *p = createNode(key);
         root = p;
     }
@@ -37,14 +37,14 @@ void insertNode(AVLNode *&root, int key){
 //create avltree from int array
 
 AVLNode *createAVL(int* arr, int n){
-    AVLNode *root = NULL;
+    AVLNode *root = nullptr;
     for(int i=0; i<n; i++){
         insertNode(root, arr[i]);
     }
     return root;
 }
 bool removeNode(AVLNode* &root, int x){
-    if(root == NULL){
+    if(root == nullptr){
         return false;
     }
     else{
@@ -56,19 +56,19 @@ bool removeNode(AVLNode* &root, int x){
         }
         else{
             AVLNode *p;
-            if(root->pLeft == NULL){
+            if(root->pLeft == nullptr){
                 p = root->pRight;
                 delete root;
                 root = p;
             }
-            else if(root->pRight == NULL){
+            else if(root->pRight == nullptr){
                 p = root->pLeft;
                 delete root;
                 root = p;
             }
             else{
                 p = root->pRight;
-                while(p->pLeft != NULL){
+                while(p->pLeft != nullptr){
                     p = p->pLeft;
                 }
                 root->key = p->key;
@@ -81,15 +81,15 @@ bool removeNode(AVLNode* &root, int x){
 // create a tree avl using the pointer
 
 bool isAVL(AVLNode*root) {
-  if (root == NULL) {
+  if (root == nullptr) {
     return true;
   }
   int leftHeight = 0;
   int rightHeight = 0;
-  if (root->pLeft != NULL) {
+  if (root->pLeft != nullptr) {
     leftHeight = root->pLeft->height;
   }
-  if (root->pRight != NULL) {
+  if (root->pRight != nullptr) {
     rightHeight = root->pRight->height;
   }
   if (abs(leftHeight - rightHeight) > 1) {
@@ -100,7 +100,7 @@ bool isAVL(AVLNode*root) {
 
 //print Node
 void printNode(AVLNode *root){
-    if(root != NULL){
+    if(root != nullptr){
         cout << root->key << " ";
         printNode(root->pLeft);
         printNode(root->pRight);

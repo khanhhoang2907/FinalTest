@@ -1,5 +1,6 @@
 #include <iostream>
-#include <ctime>
+#include <string>
+#define INT_MAX 1000
 using namespace std;
 struct AVLNode{
     int key;
@@ -8,20 +9,21 @@ struct AVLNode{
     int height;
 };
 
+//create a node
 AVLNode *createNode(int key){
     AVLNode *p = new AVLNode;
-    if(p==nullptr){
-        return nullptr;
+    if(p==NULL){
+        return NULL;
     }
     p->key = key;
-    p->pLeft = nullptr;
-    p->pRight = nullptr;
+    p->pLeft = NULL;
+    p->pRight = NULL;
     p->height = 1;
     return p;
 }
-
+//insert node
 void insertNode(AVLNode *&root, int key){
-    if(root == nullptr){
+    if(root == NULL){
         AVLNode *p = createNode(key);
         root = p;
     }
@@ -34,15 +36,17 @@ void insertNode(AVLNode *&root, int key){
         }
     }
 }
+//create avltree from int array
+
 AVLNode *createAVL(int* arr, int n){
-    AVLNode *root = nullptr;
+    AVLNode *root = NULL;
     for(int i=0; i<n; i++){
         insertNode(root, arr[i]);
     }
     return root;
 }
 bool removeNode(AVLNode* &root, int x){
-    if(root == nullptr){
+    if(root == NULL){
         return false;
     }
     else{
@@ -54,19 +58,19 @@ bool removeNode(AVLNode* &root, int x){
         }
         else{
             AVLNode *p;
-            if(root->pLeft == nullptr){
+            if(root->pLeft == NULL){
                 p = root->pRight;
                 delete root;
                 root = p;
             }
-            else if(root->pRight == nullptr){
+            else if(root->pRight == NULL){
                 p = root->pLeft;
                 delete root;
                 root = p;
             }
             else{
                 p = root->pRight;
-                while(p->pLeft != nullptr){
+                while(p->pLeft != NULL){
                     p = p->pLeft;
                 }
                 root->key = p->key;
@@ -76,16 +80,18 @@ bool removeNode(AVLNode* &root, int x){
     }
     return true;
 }
+// create a tree avl using the pointer
+
 bool isAVL(AVLNode*root) {
-  if (root == nullptr) {
+  if (root == NULL) {
     return true;
   }
   int leftHeight = 0;
   int rightHeight = 0;
-  if (root->pLeft != nullptr) {
+  if (root->pLeft != NULL) {
     leftHeight = root->pLeft->height;
   }
-  if (root->pRight != nullptr) {
+  if (root->pRight != NULL) {
     rightHeight = root->pRight->height;
   }
   if (abs(leftHeight - rightHeight) > 1) {
@@ -93,25 +99,61 @@ bool isAVL(AVLNode*root) {
   }
   return isAVL(root->pLeft) && isAVL(root->pRight);
 }
+
+//print Node
 void printNode(AVLNode *root){
-    if(root != nullptr){
+    if(root != NULL){
         cout << root->key << " ";
         printNode(root->pLeft);
         printNode(root->pRight);
     }
 }
-int main(){
-    srand(time(NULL));
-    int n = 10;
-    int *arr = new int[n];
+
+//cau2
+int miminimumEdges(int** graph, int n, int k){
+    int count = 0;
+    int *visited = new int[n];
     for(int i=0; i<n; i++){
-        arr[i] = rand()%100;
-        cout << arr[i] << " ";
+        visited[i] = 0;
     }
+    for(int i=0; i<n; i++){
+        if(visited[i] == 0){
+            count++;
+            visited[i] = 1;
+            for(int j=0; j<n; j++){
+                if(graph[i][j] == 1 && visited[j] == 0){
+                    visited[j] = 1;
+                }
+            }
+        }
+    }
+    if(count % k == 0){
+        return 0;
+    }
+    else{
+        return k - count % k;
+    }
+}
+// print graph
+void printGraph(int **graph, int n){
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            cout << graph[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+int main(){
+// // cau1
+    int arr[] = {10, 20, 30, 40, 50, 25};
+    int n = sizeof(arr)/sizeof(int);
     AVLNode *root = createAVL(arr, n);
+    cout<<"list after:";
+    cout<<endl;
+    printNode(root);
     cout<<endl;
     int x;
-    cout<<"enter number remove: ";
+    cout<<"enter number remove";
     cin>>x;
     removeNode(root,x);
     if(isAVL(root)){
@@ -120,7 +162,27 @@ int main(){
     else{
         cout << "This is not AVL tree" << endl;
     }
+    cout<<"list before: ";
+    cout<<endl;
     printNode(root);
+    return 0;
+//// cau 2
+    int n, k;
+    cin >> n >> k;
+    int **graph = new int*[n];
+    for(int i=0; i<n; i++){
+        graph[i] = new int[n];
+    }
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            cin >> graph[i][j];
+        }
+    }
+    cout<<"can so cacnh laf";
+    cout << miminimumEdges(graph, n, k);
+    
+    // pinrt graph
+    printGraph(graph, n);
     return 0;
     
 }
